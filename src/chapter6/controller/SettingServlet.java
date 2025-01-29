@@ -32,8 +32,8 @@ public class SettingServlet extends HttpServlet {
     * アプリケーションの初期化を実施する。
     */
     public SettingServlet() {
-        InitApplication application = InitApplication.getInstance();
-        application.init();
+    	InitApplication application = InitApplication.getInstance();
+    	application.init();
     }
 
     @Override
@@ -41,13 +41,13 @@ public class SettingServlet extends HttpServlet {
     	log.info(new Object(){}.getClass().getEnclosingClass().getName() +
     			" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
-        HttpSession session = request.getSession();
-        User loginUser = (User) session.getAttribute("loginUser");
+    	HttpSession session = request.getSession();
+    	User loginUser = (User) session.getAttribute("loginUser");
 
-        User user = new UserService().select(loginUser.getId());
+    	User user = new UserService().select(loginUser.getId());
 
-        request.setAttribute("user", user);
-        request.getRequestDispatcher("setting.jsp").forward(request, response);
+    	request.setAttribute("user", user);
+    	request.getRequestDispatcher("setting.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
