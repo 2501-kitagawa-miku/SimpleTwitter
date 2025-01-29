@@ -17,6 +17,7 @@ import chapter6.service.MessageService;
 
 @WebServlet(urlPatterns = { "/index.jsp" })
 public class TopServlet extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -30,7 +31,7 @@ public class TopServlet extends HttpServlet {
 	 */
 	public TopServlet() {
 		InitApplication application = InitApplication.getInstance();
-	    application.init();
+		application.init();
 	}
 
 	@Override
@@ -39,18 +40,19 @@ public class TopServlet extends HttpServlet {
 		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 				" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
-	    boolean isShowMessageForm = false;
-	    User user = (User) request.getSession().getAttribute("loginUser");
+		boolean isShowMessageForm = false;
+		User user = (User) request.getSession().getAttribute("loginUser");
 
-	    if (user != null) {
-	    	isShowMessageForm = true;
-	    }
+		if (user != null) {
+			isShowMessageForm = true;
+		}
 
-	    List<UserMessage> messages = new MessageService().select();
+		String userId = request.getParameter("user_id");
+		List<UserMessage> messages = new MessageService().select(userId);
 
-	    request.setAttribute("messages", messages);
-	    request.setAttribute("isShowMessageForm", isShowMessageForm);
-	    request.getRequestDispatcher("/top.jsp").forward(request, response);
+		request.setAttribute("messages", messages);
+		request.setAttribute("isShowMessageForm", isShowMessageForm);
+		request.getRequestDispatcher("/top.jsp").forward(request, response);
 	}
 
 }
