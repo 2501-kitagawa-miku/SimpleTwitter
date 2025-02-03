@@ -140,14 +140,14 @@ public class MessageService {
 		}
 	}
 
-	public void edit(String text, int messageId) {
+	public void edit(Message message) {
 		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 				" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			new MessageDao().edit(connection, text, messageId);
+			new MessageDao().edit(connection, message);
 			commit(connection);
 		} catch (RuntimeException e) {
 			rollback(connection);

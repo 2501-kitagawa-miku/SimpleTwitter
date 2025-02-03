@@ -60,15 +60,14 @@
 						</div>
 					<div class="text"><pre><c:out value="${message.text}" /></pre></div>
 					<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
-
-					<c:if test="${ isShowMessageForm && ( message.account == loginUser.account)}" >
+					<c:if test="${ isShowMessageForm && ( message.userId == loginUser.id)}" >
 						<form action="deleteMessage" method="post"><br />
                 			<input name="message_id" value="${message.id}" type="hidden"/>
 							<input type="submit" value="削除">
 						</form>
 					</c:if>
 
-					<c:if test="${ isShowMessageForm && ( message.account == loginUser.account)}" >
+					<c:if test="${ isShowMessageForm && ( message.userId == loginUser.id)}" >
 						<form action="edit" method="get"><br />
                 			<input name="message_id" value="${message.id}" type="hidden"/>
 							<input type="submit" value="編集">

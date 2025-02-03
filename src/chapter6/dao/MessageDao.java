@@ -134,19 +134,19 @@ public class MessageDao {
 		}
 	}
 
-	public void edit(Connection connection, String text, int messageId) {
+	public void edit(Connection connection, Message message) {
 		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 				" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
 		PreparedStatement ps = null;
 		try {
 
-			String sql = "UPDATE messages SET text = ?  WHERE id = ?";
+			String sql = "UPDATE messages SET text = ?, updated_date = CURRENT_TIMESTAMP  WHERE id = ?";
 
 			ps = connection.prepareStatement(sql);
 
-			ps.setString(1, text);
-			ps.setInt(2, messageId);
+			ps.setString(1, message.getText());
+			ps.setInt(2, message.getId());
 
 			ps.executeUpdate();
 		} catch (SQLException e) {

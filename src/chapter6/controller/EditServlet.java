@@ -18,7 +18,6 @@ import chapter6.beans.Message;
 import chapter6.beans.User;
 import chapter6.logging.InitApplication;
 import chapter6.service.MessageService;
-import chapter6.service.UserService;
 
 @WebServlet(urlPatterns = { "/edit" })
 public class EditServlet extends HttpServlet {
@@ -59,12 +58,11 @@ public class EditServlet extends HttpServlet {
 		//messageIdを変換
 		int messageId = Integer.parseInt(id);
 
-		User user = new UserService().select(loginUser.getId());
 		//messageIdでDBからデータを取得
-		Message text = new MessageService().display(messageId);
+		Message message = new MessageService().display(messageId);
 
 		//データが存在するか確認
-		if (text == null) {
+		if (message == null) {
 			List<String> errorMessages = new ArrayList<String>();
 			errorMessages.add("不正なパラメータが入力されました");
 			session.setAttribute("errorMessages", errorMessages);
@@ -72,12 +70,9 @@ public class EditServlet extends HttpServlet {
 			return;
 		}
 
-		String display = text.getText();
-
-		request.setAttribute("loginUser", user);
+		request.setAttribute("loginUser", loginUser);
 		//edditjspにmessageIdを渡す
-		request.setAttribute("message_id", messageId);
-		request.setAttribute("text", display);
+		request.setAttribute("message", message);
 		request.getRequestDispatcher("edit.jsp").forward(request, response);
 	}
 
@@ -86,20 +81,23 @@ public class EditServlet extends HttpServlet {
 		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 				" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
-		HttpSession session = request.getSession();
 		List<String> errorMessages = new ArrayList<String>();
 
 		String text = request.getParameter("text");
 		if (!isValid(text, errorMessages)) {
-			session.setAttribute("errorMessages", errorMessages);
-			request.getRequestDispatcher("/edit.jsp").forward(request, response);
+			request.setAttribute("errorMessages", errorMessages);
+			request.setAttribute("text", text);
+			request.getRequestDispatcher("edit.jsp").forward(request, response);
 			return;
 		}
 
-		String id = request.getParameter("message_id");
-		int messageId = Integer.parseInt(id);
+		Message message = new Message();
+		message.setText(text);
 
-		new MessageService().edit(text, messageId);
+		int messageId = Integer.parseInt(request.getParameter("message_id"));
+		message.setId(messageId);
+
+		new MessageService().edit(message);
 		response.sendRedirect("./");
 	}
 
