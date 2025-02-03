@@ -41,43 +41,13 @@
 			</c:if>
 
 		<div class="form-area">
-			<c:if test="${ isShowMessageForm }">
-				<form action="message" method="post">
-					いま、どうしてる？<br />
-					<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea><br />
-					<input type="submit" value="つぶやく">（140文字まで）
+				<form action="edit" method="post">
+					<textarea name="text" cols="100" rows="5" class="tweet-box"><c:out value="${text}" /></textarea><br />
+					<input name="message_id" value="${message_id}" type="hidden"/>
+					<input type="submit" value="更新">（140文字まで）
 				</form>
-			</c:if>
-		</div>
-		<div class="messages">
-			<c:forEach items="${messages}" var="message">
-				<div class="message">
-						<div class="account-name">
-						<span class="account"> <a href="./?user_id=<c:out value="${message.userId}"/> ">
-							<c:out value="${message.account}" /></a>
-						</span>
-						<span class="name"><c:out value="${message.name}" /></span>
-						</div>
-					<div class="text"><pre><c:out value="${message.text}" /></pre></div>
-					<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
-
-					<c:if test="${ isShowMessageForm && ( message.account == loginUser.account)}" >
-						<form action="deleteMessage" method="post"><br />
-                			<input name="message_id" value="${message.id}" type="hidden"/>
-							<input type="submit" value="削除">
-						</form>
-					</c:if>
-
-					<c:if test="${ isShowMessageForm && ( message.account == loginUser.account)}" >
-						<form action="edit" method="get"><br />
-                			<input name="message_id" value="${message.id}" type="hidden"/>
-							<input type="submit" value="編集">
-						</form>
-					</c:if>
-				</div>
-			</c:forEach>
 		</div>
 		<div class="copyright"> Copyright(c)Miku Kitgagawa</div>
-		</div>
+	</div>
 	</body>
 </html>
