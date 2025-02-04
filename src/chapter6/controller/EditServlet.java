@@ -84,18 +84,18 @@ public class EditServlet extends HttpServlet {
 		List<String> errorMessages = new ArrayList<String>();
 
 		String text = request.getParameter("text");
-		if (!isValid(text, errorMessages)) {
-			request.setAttribute("errorMessages", errorMessages);
-			request.setAttribute("text", text);
-			request.getRequestDispatcher("edit.jsp").forward(request, response);
-			return;
-		}
-
 		Message message = new Message();
 		message.setText(text);
 
 		int messageId = Integer.parseInt(request.getParameter("message_id"));
 		message.setId(messageId);
+
+		if (!isValid(text, errorMessages)) {
+			request.setAttribute("errorMessages", errorMessages);
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("edit.jsp").forward(request, response);
+			return;
+		}
 
 		new MessageService().edit(message);
 		response.sendRedirect("./");
