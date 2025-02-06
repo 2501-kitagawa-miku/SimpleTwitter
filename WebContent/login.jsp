@@ -19,6 +19,7 @@
                         </c:forEach>
                     </ul>
                     </div>
+                    <c:remove var="errorMessages" scope="session" />
             </c:if>
 
             <form action="login" method="post"><br />
@@ -29,7 +30,7 @@
                 <input name="password" type="password" id="password"/> <br />
 
                 <input type="submit" value="ログイン" /> <br />
-                <a href="./"><c:remove var="errorMessages" scope="session" />戻る</a>
+                <a href="./">戻る</a>
             </form>
 
             <div class="copyright"> Copyright(c)Miku Kitagawa</div>

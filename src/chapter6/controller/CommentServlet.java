@@ -47,12 +47,9 @@ public class CommentServlet extends HttpServlet {
 		String text = request.getParameter("text");
 		if (!isValid(text, errorMessages)) {
 			session.setAttribute("errorMessages", errorMessages);
-			session.setAttribute("text", text);
 			response.sendRedirect("./");
 			return;
 		}
-
-
 
 		Comment comment = new Comment();
 		comment.setText(text);
