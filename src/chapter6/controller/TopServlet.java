@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import chapter6.beans.User;
+import chapter6.beans.UserComment;
 import chapter6.beans.UserMessage;
 import chapter6.logging.InitApplication;
+import chapter6.service.CommentService;
 import chapter6.service.MessageService;
 
 @WebServlet(urlPatterns = { "/index.jsp" })
@@ -48,9 +50,16 @@ public class TopServlet extends HttpServlet {
 		}
 
 		String userId = request.getParameter("user_id");
-		List<UserMessage> messages = new MessageService().select(userId);
+		String startDate = request.getParameter("start_date");
+		String finishDate = request.getParameter("finish_date");
+		List<UserMessage> messages = new MessageService().select(userId, startDate, finishDate);
+
+		List<UserComment> comments = new CommentService().select();
 
 		request.setAttribute("messages", messages);
+		request.setAttribute("comments", comments);
+		request.setAttribute("startDate", startDate);
+		request.setAttribute("finishDate", finishDate);
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
 		request.getRequestDispatcher("/top.jsp").forward(request, response);
 	}
