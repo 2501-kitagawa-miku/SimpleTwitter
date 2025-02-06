@@ -12,6 +12,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import chapter6.beans.User;
@@ -28,8 +29,9 @@ public class LoginFilter implements Filter {
 		if(loginUser == null) {
 			List<String> errorMessages = new ArrayList<String>();
 			errorMessages.add("ログインしてください");
-			request.setAttribute("errorMessages", errorMessages);
-			request.getRequestDispatcher("login.jsp").forward(request, response);
+			session.setAttribute("errorMessages", errorMessages);
+			//use redirect ("URL" is different between setting/edit and login)
+			((HttpServletResponse)response).sendRedirect("./login");
 			return;
 		}
 
